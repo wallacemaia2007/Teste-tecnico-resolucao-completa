@@ -10,6 +10,6 @@ import br.teste.tecnico.AID.Teste.Tecnico.model.entities.Status;
 
 public interface AgendamentoRepository extends JpaRepository<Agendamento, UUID>{
 
-    List<Agendamento> findByStatus(Status status);
+    List<Agendamento> findAllByStatus(Status status);
     
 }

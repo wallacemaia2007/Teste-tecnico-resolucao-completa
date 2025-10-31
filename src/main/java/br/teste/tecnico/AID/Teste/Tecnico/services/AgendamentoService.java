@@ -33,9 +33,18 @@ public class AgendamentoService {
 
     public List<AgendamentoResponse> listarAgendamentoStatus(String status) {
         Status statusEnum = Status.valueOf(status.toUpperCase());
-        List<Agendamento> agendamentos = agendamentoRepository.findByStatus(statusEnum);
+        List<Agendamento> agendamentos = agendamentoRepository.findAllByStatus(statusEnum);
         List<AgendamentoResponse> agendamentoResponses = agendamentos.stream().map(x -> agendamentoMapper.toResponse(x))
                 .toList();
         return agendamentoResponses;
     }
+
+    public List<AgendamentoResponse> listarTodosAgendamentos() {
+        List<Agendamento> agendamentos = agendamentoRepository.findAll();
+        List<AgendamentoResponse> agendamentoResponses = agendamentos.stream().map(x -> agendamentoMapper.toResponse(x))
+                .toList();
+        return agendamentoResponses;
+    }
+
+    
 }

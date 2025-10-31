@@ -15,7 +15,6 @@ import br.teste.tecnico.AID.Teste.Tecnico.model.dtos.AgendamentoRequest;
 import br.teste.tecnico.AID.Teste.Tecnico.model.dtos.AgendamentoResponse;
 import br.teste.tecnico.AID.Teste.Tecnico.services.AgendamentoService;
 
-
 @RestController
 @RequestMapping("/agendamentos")
 public class AgendamentoController {
@@ -33,12 +32,15 @@ public class AgendamentoController {
     }
 
     @GetMapping("/{status}")
-    public ResponseEntity<List<AgendamentoResponse>> getMethodName(@PathVariable String status) {
+    public ResponseEntity<List<AgendamentoResponse>> listarAgendamentoStatus(@PathVariable String status) {
         List<AgendamentoResponse> agendamentoResponses = agendamentoService.listarAgendamentoStatus(status);
         return ResponseEntity.ok().body(agendamentoResponses);
     }
-    
 
-
+    @GetMapping
+    public ResponseEntity<List<AgendamentoResponse>> listarTodosAgendamentos() {
+        List<AgendamentoResponse> agendamentoResponses = agendamentoService.listarTodosAgendamentos();
+        return ResponseEntity.ok().body(agendamentoResponses);
+    }
 
 }
