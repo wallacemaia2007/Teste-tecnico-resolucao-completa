@@ -4,12 +4,16 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import br.teste.tecnico.AID.Teste.Tecnico.exceptions.AgendamentoJaCanceladoException;
 import br.teste.tecnico.AID.Teste.Tecnico.exceptions.DataInvalidaException;
 import br.teste.tecnico.AID.Teste.Tecnico.exceptions.IdNaoExcistenteException;
+import br.teste.tecnico.AID.Teste.Tecnico.exceptions.MotivoVazioException;
 import br.teste.tecnico.AID.Teste.Tecnico.mapper.AgendamentoMapper;
 import br.teste.tecnico.AID.Teste.Tecnico.model.dtos.AgendamentoRequest;
 import br.teste.tecnico.AID.Teste.Tecnico.model.dtos.AgendamentoResponse;
+import br.teste.tecnico.AID.Teste.Tecnico.model.dtos.CancelamentoRequest;
 import br.teste.tecnico.AID.Teste.Tecnico.model.dtos.NotaRequest;
 import br.teste.tecnico.AID.Teste.Tecnico.model.entities.Agendamento;
 import br.teste.tecnico.AID.Teste.Tecnico.model.enums.Status;
@@ -59,4 +63,22 @@ public class AgendamentoService {
         return agendamentoResponse;
     }
 
+    public AgendamentoResponse cancelarAgendamento(UUID id, CancelamentoRequest cancelamentoRequest) {
+        Agendamento agendamento = agendamentoRepository.findById(id).orElseThrow(
+                () -> new IdNaoExcistenteException("O id mencionado não existe!"));
+        if (!StringUtils.hasText(cancelamentoRequest.motivo()))
+            throw new MotivoVazioException("O motivo para o cancelamento não pode ficar vazio!");
+        else{
+            if(agendamento.getStatus() == Status.CANCELADO){
+                throw new AgendamentoJaCanceladoException("O Agendamento mencionado já foi cancelado!");
+            }else{
+                agendamento.setStatus(Status.CANCELADO);
+                agendamentoRepository.save(agendamento);
+            }
+        AgendamentoResponse agendamentoResponse = agendamentoMapper.toResponse(agendamento);
+
+        return agendamentoResponse;
+    }
+
+}
 }

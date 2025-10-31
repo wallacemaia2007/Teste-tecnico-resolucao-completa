@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.teste.tecnico.AID.Teste.Tecnico.model.dtos.AgendamentoRequest;
 import br.teste.tecnico.AID.Teste.Tecnico.model.dtos.AgendamentoResponse;
+import br.teste.tecnico.AID.Teste.Tecnico.model.dtos.CancelamentoRequest;
 import br.teste.tecnico.AID.Teste.Tecnico.model.dtos.NotaRequest;
 import br.teste.tecnico.AID.Teste.Tecnico.services.AgendamentoService;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/agendamentos")
@@ -50,6 +52,13 @@ public class AgendamentoController {
             @RequestBody NotaRequest notaRequest) {
         AgendamentoResponse agendamentoResponse = agendamentoService.adicionarNota(id, notaRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(agendamentoResponse);
+    }
+
+    @PutMapping("/{id}/cancelar")
+    public ResponseEntity<AgendamentoResponse> cancelarAgendamento(@PathVariable UUID id,
+            @RequestBody CancelamentoRequest cancelamentoRequest) {
+        AgendamentoResponse agendamentoResponse = agendamentoService.cancelarAgendamento(id, cancelamentoRequest);
+        return ResponseEntity.ok().body(agendamentoResponse);
     }
 
 }
