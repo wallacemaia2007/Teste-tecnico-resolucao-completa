@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
 import br.teste.tecnico.AID.Teste.Tecnico.exceptions.DataInvalidaException;
+import br.teste.tecnico.AID.Teste.Tecnico.exceptions.IdNaoExcistenteException;
 import br.teste.tecnico.AID.Teste.Tecnico.model.dtos.ErroResponse;
 
 @ControllerAdvice
@@ -20,6 +21,14 @@ public class GlobalExceptionHandler {
 		ErroResponse erroResponse = new ErroResponse(LocalDateTime.now(), ex.getMessage(),
 				request.getDescription(false));
 		return new ResponseEntity<>(erroResponse, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(IdNaoExcistenteException.class)
+	public ResponseEntity<ErroResponse> handleIdNaoExcistenteException(IdNaoExcistenteException ex,
+			WebRequest request) {
+		ErroResponse erroResponse = new ErroResponse(LocalDateTime.now(), ex.getMessage(),
+				request.getDescription(false));
+		return new ResponseEntity<>(erroResponse, HttpStatus.NOT_FOUND);
 	}
 
 

@@ -1,6 +1,7 @@
 package br.teste.tecnico.AID.Teste.Tecnico.controllers;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.teste.tecnico.AID.Teste.Tecnico.model.dtos.AgendamentoRequest;
 import br.teste.tecnico.AID.Teste.Tecnico.model.dtos.AgendamentoResponse;
+import br.teste.tecnico.AID.Teste.Tecnico.model.dtos.NotaRequest;
 import br.teste.tecnico.AID.Teste.Tecnico.services.AgendamentoService;
 
 @RestController
@@ -41,6 +43,13 @@ public class AgendamentoController {
     public ResponseEntity<List<AgendamentoResponse>> listarTodosAgendamentos() {
         List<AgendamentoResponse> agendamentoResponses = agendamentoService.listarTodosAgendamentos();
         return ResponseEntity.ok().body(agendamentoResponses);
+    }
+
+    @PostMapping("/{id}/notas")
+    public ResponseEntity<AgendamentoResponse> adicionarNota(@PathVariable UUID id,
+            @RequestBody NotaRequest notaRequest) {
+        AgendamentoResponse agendamentoResponse = agendamentoService.adicionarNota(id, notaRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(agendamentoResponse);
     }
 
 }
