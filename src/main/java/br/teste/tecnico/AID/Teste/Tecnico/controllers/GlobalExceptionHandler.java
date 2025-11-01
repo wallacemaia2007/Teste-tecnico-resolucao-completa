@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
 import br.teste.tecnico.AID.Teste.Tecnico.exceptions.AgendamentoJaCanceladoException;
+import br.teste.tecnico.AID.Teste.Tecnico.exceptions.AgendamentoJaPassouException;
 import br.teste.tecnico.AID.Teste.Tecnico.exceptions.DataInvalidaException;
 import br.teste.tecnico.AID.Teste.Tecnico.exceptions.IdNaoExcistenteException;
+import br.teste.tecnico.AID.Teste.Tecnico.exceptions.IdNuloException;
 import br.teste.tecnico.AID.Teste.Tecnico.exceptions.MotivoVazioException;
 import br.teste.tecnico.AID.Teste.Tecnico.model.dtos.ErroResponse;
 
@@ -43,6 +45,22 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(AgendamentoJaCanceladoException.class)
 	public ResponseEntity<ErroResponse> handleIdAgendamentoJaCanceladoException(AgendamentoJaCanceladoException ex,
+			WebRequest request) {
+		ErroResponse erroResponse = new ErroResponse(LocalDateTime.now(), ex.getMessage(),
+				request.getDescription(false));
+		return new ResponseEntity<>(erroResponse, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(AgendamentoJaPassouException.class)
+	public ResponseEntity<ErroResponse> handleAgendamentoJaPassouException(AgendamentoJaPassouException ex,
+			WebRequest request) {
+		ErroResponse erroResponse = new ErroResponse(LocalDateTime.now(), ex.getMessage(),
+				request.getDescription(false));
+		return new ResponseEntity<>(erroResponse, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(IdNuloException.class)
+	public ResponseEntity<ErroResponse> handleIdNuloException(IdNuloException ex,
 			WebRequest request) {
 		ErroResponse erroResponse = new ErroResponse(LocalDateTime.now(), ex.getMessage(),
 				request.getDescription(false));
